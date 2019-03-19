@@ -1,0 +1,26 @@
+{
+  "name": "play_be",
+  "version": "1.0.0",
+  "description": "Play Back End",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asmolentzov/play_be.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asmolentzov/play_be/issues"
+  },
+  "homepage": "https://github.com/asmolentzov/play_be#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "knex": "^0.16.3",
+    "pg": "^7.9.0"
+  }
+}
