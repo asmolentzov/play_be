@@ -7,13 +7,13 @@ exports.up = function(knex, Promise) {
       table.string('artist_name');
       table.string('genre');
       table.integer('rating');
-      
+
       table.timestamps(true, true);
     }),
     knex.schema.createTable('playlists', function(table) {
       table.increments('id').primary();
       table.string('playlist_name');
-      
+
       table.timestamps(true, true);
     }),
     knex.schema.createTable('playlist_favorites', function(table) {
@@ -22,7 +22,7 @@ exports.up = function(knex, Promise) {
       table.foreign('favorite_id').references('favorites.id');
       table.integer('playlist_id').unsigned();
       table.foreign('playlist_id').references('playlists.id');
-      
+
       table.timestamps(true, true);
     })
   ])
