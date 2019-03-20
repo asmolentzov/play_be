@@ -14,6 +14,5 @@ app.locals.title = 'play_app';
 
 
 module.exports = {
-  app: app,
-  database: database
+  app: app
 }
