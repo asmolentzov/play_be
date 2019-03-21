@@ -132,5 +132,26 @@ describe('API Routes', () => {
             done();
           });
     });
+    
+    it('should not create a new favorite with a rating that is not a number', done => {
+      chai.request(server)
+      .post('/api/v1/favorites')
+        .send({
+          "favorites": {
+          "id": 1,
+          "name": "We Will Rock You",
+          "artist_name": "Queen",
+          "genre": "Rock",
+          "rating": 'ok'
+          }
+        })
+        .end((error, response) => {
+          response.should.have.status(400);
+          response.body.error.should.equal(
+            `Rating must be a number between 0 - 100.`
+          );
+          done();
+        });
+    });
   });
 });
