@@ -16,7 +16,7 @@ jobs:
         environment:
           POSTGRES_DB: graphql_todo_test
           POSTGRES_PASSWORD: ""
-          POSTGRES_USER: play_user
+          POSTGRES_USER: play_app_test
     # docker:
     #   - image: circleci/node:7.10
     #     environment:
