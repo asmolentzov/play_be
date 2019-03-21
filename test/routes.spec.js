@@ -47,4 +47,111 @@ describe('API Routes', () => {
         });
     });
   });
+  
+  describe('POST /api/v1/favorites', () => {
+    it('should add a new favorite', done => {
+      chai.request(server)
+        .post('/api/v1/favorites')
+          .send({
+            "favorites": {
+            "id": 1,
+            "name": "We Will Rock You",
+            "artist_name": "Queen",
+            "genre": "Rock",
+            "rating": 88
+            }
+          })
+          .end((error, response) => {
+            response.should.have.status(201);
+            response.body.should.be.a('array');
+            response.body[0].should.be.a('object');
+            response.body[0].should.have.property('id');
+            response.body[0].should.have.property('name');
+            response.body[0].should.have.property('artist_name');
+            response.body[0].should.have.property('genre');
+            response.body[0].should.have.property('rating');
+            done();
+          })
+    });
+    
+    it('should not create a new favorite with missing data', done => {
+      chai.request(server)
+        .post('/api/v1/favorites')
+          .send({
+            "favorites": {
+              "name": "Missing stuff"
+            } 
+          })
+          .end((error, response) => {
+            response.should.have.status(400);
+            response.body.error.should.equal(
+              `You're missing a "id" property.`
+            );
+            done();
+          });
+    });
+    
+    it('should not create a new favorite with a rating over 100', done => {
+      chai.request(server)
+        .post('/api/v1/favorites')
+          .send({
+            "favorites": {
+            "id": 1,
+            "name": "We Will Rock You",
+            "artist_name": "Queen",
+            "genre": "Rock",
+            "rating": 200
+            }
+          })
+          .end((error, response) => {
+            response.should.have.status(400);
+            response.body.error.should.equal(
+              `Rating must be a number between 0 - 100.`
+            );
+            done();
+          });
+    });
+    
+    it('should not create a new favorite with a rating under 0', done => {
+      chai.request(server)
+        .post('/api/v1/favorites')
+          .send({
+            "favorites": {
+            "id": 1,
+            "name": "We Will Rock You",
+            "artist_name": "Queen",
+            "genre": "Rock",
+            "rating": -12
+            }
+          })
+          .end((error, response) => {
+            response.should.have.status(400);
+            response.body.error.should.equal(
+              `Rating must be a number between 0 - 100.`
+            );
+            done();
+          });
+    });
+    
+    it('should not create a new favorite with a rating that is not a number', done => {
+      chai.request(server)
+      .post('/api/v1/favorites')
+        .send({
+          "favorites": {
+          "id": 1,
+          "name": "We Will Rock You",
+          "artist_name": "Queen",
+          "genre": "Rock",
+          "rating": 'ok'
+          }
+        })
+        .end((error, response) => {
+          response.should.have.status(400);
+          response.body.error.should.equal(
+            `Rating must be a number between 0 - 100.`
+          );
+          done();
+        });
+    });
+  });
 });
