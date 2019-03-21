@@ -21,6 +21,24 @@ app.get('/api/v1/favorites', (request, response) => {
     });
 });
 
+app.post('/api/v1/favorites', (request, response) => {
+  const favorite = request.body.favorites;
+  for(let requiredParameter of ['id', 'name', 'artist_name', 'genre', 'rating']) {
+    if(!favorite[requiredParameter]) {
+      return response
+        .status(400)
+        .send({ error: `You're missing a ${requiredParameter} property.` });
+    }
+  }
+  database('favorites').insert(favorite, 'id')
+    .then(favorite => {
+      response.status(201).json(favorite)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    });
+});
+
 module.exports = {
   app: app
 }
