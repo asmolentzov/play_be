@@ -6,7 +6,6 @@ const pry = require('pryjs')
 const server = require('../index.js').app;
 const config = require('../knexfile.js')['test'];
 const database = require('knex')(config);
-
 chai.use(chaiHttp);
 
 
@@ -24,7 +23,6 @@ describe('API Routes', () => {
   });
   
   beforeEach(done => {
-    console.log('running beforeEach block')
     database.seed.run()
       .then(() => done())
       .catch(error => {
