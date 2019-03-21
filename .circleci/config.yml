@@ -42,7 +42,7 @@ jobs:
       - run:
           name: create database
           command: |
-            psql --host localhost -U postgres -d postgres_db < .circleci/CreateDatabase.sql
+            psql --host localhost -U postgres -d postgres_db play_test_app
 
       - run:
           name: Set Up DB
