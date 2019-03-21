@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const cors = require('express-cors')
+const cors = require('cors')
 const environment = process.env.NODE_ENV || 'test';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
