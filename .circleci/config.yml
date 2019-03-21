@@ -5,46 +5,59 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/play_be
     docker:
-      # specify the version you desire here
       - image: circleci/node:7.10
-        environment: 
-          TEST_DATABASE_URL: postgres://localhost/play_app_test
-          
+        environment:
+          NODE_ENV: test
+          PG_HOST: 127.0.0.1
+          POSTGRES_DB: postgres_db
+          POSTGRES_USER: postgres
+          PG_PASSWD: boilerplate
       - image: circleci/postgres:9.6.2-alpine
         environment:
-          POSTGRES_USER: root
-          POSTGRES_DB: play_app_test
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
+          POSTGRES_DB: postgres_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: boilerplate
 
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run: npm install
       - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm install
-      - run: sudo apt-get install postgresql-client-9.6
+      - run:
+          name: install postgresql-client
+          command: |
+            apk update
+            apk add postgresql-client
 
       - run:
-          name: Database Setup
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run:
+          name: create database
           command: |
-            psql \
-            CREATE DATABASE play_app_test; \
-            \c play_app_test
+            set PGPASSWORD=boilerplate
+            psql --host localhost -U postgres -d postgres_db < .circleci/play_app_test.sql
+
+      - run:
+          name: Set Up DB
+          command: knex migrate:latest
       # run tests!
+
       - run: npm test
+
+
+    # steps:
+    #   - run:
+    #       name: Set up DB
+    #       command: |
+    #         bundle exec rake db:create db:schema:load --trace
+    #         bundle exec rake db:migrate
+    #     environment:
+    #       DATABASE_URL: "postgres://ubuntu@localhost:5432/db_name"
