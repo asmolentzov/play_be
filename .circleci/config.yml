@@ -10,7 +10,7 @@ jobs:
       - image: circleci/node:7.10
         environment:
           PGHOST: 127.0.0.1
-          PGUSER: play_user
+          PGUSER: play_app_test
           NODE_ENV: test
       - image: circleci/postgres:9.6.2-alpine
         environment:
