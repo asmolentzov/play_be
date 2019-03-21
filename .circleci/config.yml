@@ -53,7 +53,7 @@ jobs:
           name: create database
           command: |
             psql
-            create database play_app_test
+            create database play_app_test;
 
       - run:
           name: Set Up DB
