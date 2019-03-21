@@ -47,4 +47,30 @@ describe('API Routes', () => {
         });
     });
   });
+  
+  describe('POST /api/v1/favorites', () => {
+    it('should add a new favorite', () => {
+      chai.request(server)
+        .post('/api/v1/favorites')
+          .send({
+            "favorites": {
+            "id": 1,
+            "name": "We Will Rock You",
+            "artist_name": "Queen",
+            "genre": "Rock",
+            "rating": 88
+            }
+          })
+          .end((error, response) => {
+            response.should.have.status(201);
+            response.body.should.be.a('object');
+            response.body.should.have.property('id');
+            response.body.should.have.property('name');
+            response.body.should.have.property('artist_name');
+            response.body.should.have.property('genre');
+            response.body.should.have.property('rating');
+            done();
+          })
+    })
+  })
 });
