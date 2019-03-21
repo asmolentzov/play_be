@@ -42,7 +42,9 @@ jobs:
       - run:
           name: create database
           command: |
-            psql create database play_app_test
+            psql
+            createdb -h localhost -p 5432 -U POSTGRES_USER play_app_test
+            password POSTGRES_PASSWORD
 
       - run:
           name: Set Up DB
