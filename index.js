@@ -28,10 +28,10 @@ app.post('/api/v1/favorites', (request, response) => {
       return response
         .status(400)
         .send({ error: `You're missing a "${requiredParameter}" property.` });
-    } else if(favorite['rating'] > 100) {
+    } else if(favorite['rating'] > 100 || favorite['rating'] < 0) {
       return response
         .status(400)
-        .send({ error: 'Rating must be between 0 - 100.' })
+        .send({ error: 'Rating must be a number between 0 - 100.' })
     }
   }
   database('favorites').insert(favorite, ['id', 'name', 'artist_name', 'genre', 'rating'])
