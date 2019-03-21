@@ -50,12 +50,6 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
 
       - run:
-          name: create database
-          command: |
-            psql
-            create database play_app_test;
-
-      - run:
           name: Set Up DB
           command: knex migrate:latest
 
