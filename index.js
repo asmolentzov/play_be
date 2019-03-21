@@ -27,10 +27,10 @@ app.post('/api/v1/favorites', (request, response) => {
     if(!favorite[requiredParameter]) {
       return response
         .status(400)
-        .send({ error: `You're missing a ${requiredParameter} property.` });
+        .send({ error: `You're missing a "${requiredParameter}" property.` });
     }
   }
-  database('favorites').insert(favorite, 'id')
+  database('favorites').insert(favorite, ['id', 'name', 'artist_name', 'genre', 'rating'])
     .then(favorite => {
       response.status(201).json(favorite)
     })

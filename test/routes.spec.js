@@ -49,7 +49,7 @@ describe('API Routes', () => {
   });
   
   describe('POST /api/v1/favorites', () => {
-    it('should add a new favorite', () => {
+    it('should add a new favorite', done => {
       chai.request(server)
         .post('/api/v1/favorites')
           .send({
@@ -63,14 +63,32 @@ describe('API Routes', () => {
           })
           .end((error, response) => {
             response.should.have.status(201);
-            response.body.should.be.a('object');
-            response.body.should.have.property('id');
-            response.body.should.have.property('name');
-            response.body.should.have.property('artist_name');
-            response.body.should.have.property('genre');
-            response.body.should.have.property('rating');
+            response.body.should.be.a('array');
+            response.body[0].should.be.a('object');
+            response.body[0].should.have.property('id');
+            response.body[0].should.have.property('name');
+            response.body[0].should.have.property('artist_name');
+            response.body[0].should.have.property('genre');
+            response.body[0].should.have.property('rating');
             done();
           })
-    })
-  })
+    });
+    
+    it('should not create a new favorite with missing data', done => {
+      chai.request(server)
+        .post('/api/v1/favorites')
+          .send({
+            "favorites": {
+              "name": "Missing stuff"
+            } 
+          })
+          .end((error, response) => {
+            response.should.have.status(400);
+            response.body.error.should.equal(
+              `You're missing a "id" property.`
+            );
+            done();
+          });
+    });
+  });
 });
