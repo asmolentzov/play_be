@@ -43,7 +43,7 @@ jobs:
           name: create database
           command: |
             psql
-            createdb -h localhost -p 5432 -U POSTGRES_USER play_app_test
+            createdb -h PG_HOST -p 5432 -U POSTGRES_USER play_app_test
             password POSTGRES_PASSWORD
 
       - run:
