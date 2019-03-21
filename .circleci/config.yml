@@ -8,7 +8,14 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:7.10
-
+        environment: 
+          TEST_DATABASE_URL: postgres://localhost/play_app_test
+          
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: play_app_test
+      
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -26,12 +33,18 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: npm install
-
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm install
+      - run: sudo apt-get install postgresql-client-9.6
 
+      - run:
+          name: Database Setup
+          command: |
+            psql \
+            CREATE DATABASE play_app_test; \
+            \c play_app_test
       # run tests!
       - run: npm test
