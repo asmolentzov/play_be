@@ -42,7 +42,6 @@ jobs:
       - run:
           name: create database
           command: |
- set        set PGPASSWORD=boilerplate
             psql --host localhost -U postgres -d postgres_db < .circleci/CreateDatabase.sql
 
       - run:
