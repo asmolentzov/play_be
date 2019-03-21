@@ -32,8 +32,8 @@ jobs:
       - run:
           name: install postgresql-client
           command: |
-            apk update
-            apk add postgresql-client
+            sudo apt-get update
+            sudo apt-get add postgresql-client
 
       - run:
           name: Wait for db
