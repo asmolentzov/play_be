@@ -3,8 +3,9 @@ const should = chai.should();
 const chaiHttp = require('chai-http');
 const pry = require('pryjs')
 
+const environment = process.env.NODE_ENV || 'test';
 const server = require('../index.js').app;
-const config = require('../knexfile.js')['test'];
+const config = require('../knexfile.js')[environment];
 const database = require('knex')(config);
 chai.use(chaiHttp);
 
