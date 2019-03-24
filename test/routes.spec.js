@@ -209,5 +209,23 @@ describe('API Routes', () => {
             done();
           });
     });
+    
+    it('should return an error if the specified ID does not exist', done => {
+      chai.request(server)
+        .put('/api/v1/favorites/2000')
+          .send({
+            "favorites": {
+              "id": 1,
+              "name": "New!",
+              "artist_name": "Queen",
+              "genre": "Rock",
+              "rating": 77
+            }
+          })
+          .end((error, response) => {
+            response.should.have.status(400);
+            done();
+          });
+    });
   });
 });
