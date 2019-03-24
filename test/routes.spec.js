@@ -185,25 +185,15 @@ describe('API Routes', () => {
     });
   });
 
-  describe('DELETE /api/v1/favorites/:id', () => {
-    it('should delete a specified favorite from the database', done => {
-      chai.request(server)
-      .get('/api/v1/favorites/1')
-      .end((error, response) => {
-        chai.request(server)
-        .delete('/favorites/' + response.body[0].id)
-        .end((error, response) => {
-          response.should.have.status(200);
-          response.should.be.json;
-          response.body.should.be.a('object');
-          response.body.should.have.property('REMOVED');
-          response.body.REMOVED.should.be.a('object');
-          response.body.REMOVED.should.have.property('name');
-          response.body.REMOVED.should.have.property('_id');
-          response.body.REMOVED.name.should.equal('song_1');
-          done();
-        })
-      })
-    })
-  })
+  // describe('DELETE /api/v1/favorites/:id', () => {
+  //   it('should delete a specified favorite from the database', done => {
+  //       chai.request(server)
+  //       .del('/api/v1/favorites/1')
+  //       .end((error, response) => {
+  //         // eval(pry.it)
+  //         response.should.have.status(204);
+  //         done();
+  //       })
+  //     })
+  //   })
 });
