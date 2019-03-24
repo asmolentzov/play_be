@@ -73,6 +73,11 @@ app.get('/api/v1/favorites/:id', (request, response) => {
 
 app.put('/api/v1/favorites/:id', (request, response) => {
   const newFavorite = request.body.favorites;
+  for(let requiredParameter of ['id', 'name', 'artist_name', 'genre', 'rating']) {
+    if(!newFavorite[requiredParameter]) {
+      return response.status(400).send({ error: `You're missing a ${requiredParameter} property.` })
+    } 
+  };
   database('favorites').where('id', request.params.id)
     .update(newFavorite, ['id', 'name', 'artist_name', 'genre', 'rating'])
       .then(newFavorite => {
