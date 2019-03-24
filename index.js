@@ -75,9 +75,9 @@ app.delete('/api/v1/favorites/:id', (request, response) => {
     .then(favorite => {
       if(favorite.length) {
         database('favorites')
-        .where({ id: request.params.id })
+        .where('id', request.params.id)
         .del()
-        response.status(200).json('favorite')
+        .then(response => {response.resolve})
       } else {
         response.status(404).json({ error: `Could not find Favorite with ID: ${request.params.id}.` });
       }
