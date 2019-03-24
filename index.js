@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors')
-const environment = process.env.NODE_ENV || 'test';
+const pry = require('pryjs')
+const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
@@ -68,7 +69,28 @@ app.get('/api/v1/favorites/:id', (request, response) => {
     .catch(error => {
       response.status(500).json({ error })
     });
-})
+});
+
+app.put('/api/v1/favorites/:id', (request, response) => {
+  const newFavorite = request.body.favorites;
+  for(let requiredParameter of ['id', 'name', 'artist_name', 'genre', 'rating']) {
+    if(!newFavorite[requiredParameter]) {
+      return response.status(400).send({ error: `You're missing a ${requiredParameter} property.` })
+    } 
+  };
+  database('favorites').where('id', request.params.id)
+    .update(newFavorite, ['id', 'name', 'artist_name', 'genre', 'rating'])
+      .then(newFavorite => {
+        if(newFavorite.length) {
+          response.status(200).json(newFavorite);
+        } else {
+          response.status(400).json({ error: `Could not find Favorite with ID: ${request.params.id}.`});
+        }
+      })
+      .catch(error => {
+        response.status(500).json({ error });
+      });
+});
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
