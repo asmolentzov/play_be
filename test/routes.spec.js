@@ -185,6 +185,7 @@ describe('API Routes', () => {
     });
   });
 
+
   // describe('DELETE /api/v1/favorites/:id', () => {
   //   it('should delete a specified favorite from the database', done => {
   //       chai.request(server)
@@ -196,4 +197,64 @@ describe('API Routes', () => {
   //       })
   //     })
   //   })
+
+  
+  describe('PUT /api/v1/favorites/:id', () => {
+    it('should update the specified favorite', done => {
+      const newName = "We Are the Champions";
+      const newArtist = "Queen";
+      chai.request(server)
+        .put('/api/v1/favorites/1')
+          .send({
+              "favorites": {
+                "id": 1,
+                "name": newName,
+                "artist_name": newArtist,
+                "genre": "Rock",
+                "rating": 77
+              }
+          })
+          .end((error, response) => {
+            response.should.have.status(200);
+            response.body.should.be.a('array');
+            response.body[0].should.be.a('object');
+            response.body[0].name.should.equal(newName);
+            response.body[0].artist_name.should.equal(newArtist);
+            done();
+          });
+    });
+    
+    it('should return an error if the specified ID does not exist', done => {
+      chai.request(server)
+        .put('/api/v1/favorites/2000')
+          .send({
+            "favorites": {
+              "id": 1,
+              "name": "New!",
+              "artist_name": "Queen",
+              "genre": "Rock",
+              "rating": 77
+            }
+          })
+          .end((error, response) => {
+            response.should.have.status(400);
+            done();
+          });
+    });
+    
+    it('should return an error if all fields are not included', done => {
+      chai.request(server)
+        .put('/api/v1/favorites/1')
+          .send({
+            "favorites": {
+              "name": "New!"
+            }
+          })
+          .end((error, response) => {
+            response.should.have.status(400);
+            done();
+          });
+    })
+  });
+
 });
