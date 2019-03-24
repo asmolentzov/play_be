@@ -76,9 +76,16 @@ app.put('/api/v1/favorites/:id', (request, response) => {
   database('favorites').where('id', request.params.id)
     .update(newFavorite, ['id', 'name', 'artist_name', 'genre', 'rating'])
       .then(newFavorite => {
-        response.status(200).json(newFavorite);
+        if(newFavorite.length) {
+          response.status(200).json(newFavorite);
+        } else {
+          response.status(400).json({ error: `Could not find Favorite with ID: ${request.params.id}.`});
+        }
+      })
+      .catch(error => {
+        response.status(500).json({ error });
       });
-})
+});
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
