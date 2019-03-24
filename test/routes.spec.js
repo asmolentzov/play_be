@@ -24,11 +24,17 @@ describe('API Routes', () => {
   });
   
   beforeEach(done => {
-    database.seed.run()
-      .then(() => done())
-      .catch(error => {
-        throw error;
-      });
+    database.raw("TRUNCATE playlist_favorites restart identity;")
+      .then(() => database.raw("TRUNCATE playlists restart identity CASCADE;"))
+        .then(() => database.raw("TRUNCATE favorites restart identity CASCADE;"))
+          .then(() => database.seed.run()
+            .then(() => done())
+            .catch(error => {
+              throw error;
+            }))
+          .catch(error => {
+            throw error;
+    });
   });
   
   describe('GET /api/v1/favorites', () => {
@@ -55,7 +61,7 @@ describe('API Routes', () => {
         .post('/api/v1/favorites')
           .send({
             "favorites": {
-            "id": 1,
+            "id": 100,
             "name": "We Will Rock You",
             "artist_name": "Queen",
             "genre": "Rock",
@@ -151,6 +157,29 @@ describe('API Routes', () => {
           response.body.error.should.equal(
             `Rating must be a number between 0 - 100.`
           );
+          done();
+        });
+    });
+  });
+  
+  describe('GET /api/v1/favorites/:id', () => {
+    it('should get the specified favorite information', done => {
+      chai.request(server)
+        .get('/api/v1/favorites/1')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('array');
+          response.body.length.should.equal(1);
+          response.body[0].should.be.a('object');
+          done();
+        });
+    });
+    
+    it('should return an error if the specified ID does not exist', done => {
+      chai.request(server)
+        .get('/api/v1/favorites/400')
+        .end((error, response) => {
+          response.should.have.status(404);
           done();
         });
     });
