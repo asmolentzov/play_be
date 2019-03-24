@@ -227,5 +227,19 @@ describe('API Routes', () => {
             done();
           });
     });
+    
+    it('should return an error if all fields are not included', done => {
+      chai.request(server)
+        .put('/api/v1/favorites/1')
+          .send({
+            "favorites": {
+              "name": "New!"
+            }
+          })
+          .end((error, response) => {
+            response.should.have.status(400);
+            done();
+          });
+    })
   });
 });
