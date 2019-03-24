@@ -174,5 +174,14 @@ describe('API Routes', () => {
           done();
         });
     });
+    
+    it('should return an error if the specified ID does not exist', done => {
+      chai.request(server)
+        .get('/api/v1/favorites/400')
+        .end((error, response) => {
+          response.should.have.status(404);
+          done();
+        });
+    });
   });
 });
