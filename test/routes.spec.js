@@ -184,4 +184,30 @@ describe('API Routes', () => {
         });
     });
   });
+  
+  describe('PUT /api/v1/favorites/:id', () => {
+    it('should update the specified favorite', done => {
+      const newName = "We Are the Champions";
+      const newArtist = "Queen";
+      chai.request(server)
+        .put('/api/v1/favorites/1')
+          .send({
+              "favorites": {
+                "id": 1,
+                "name": newName,
+                "artist_name": newArtist,
+                "genre": "Rock",
+                "rating": 77
+              }
+          })
+          .end((error, response) => {
+            response.should.have.status(200);
+            response.body.should.be.a('array');
+            response.body[0].should.be.a('object');
+            response.body[0].name.should.equal(newName);
+            response.body[0].artist_name.should.equal(newArtist);
+            done();
+          });
+    });
+  });
 });
