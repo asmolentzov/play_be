@@ -3,7 +3,7 @@ const should = chai.should();
 const chaiHttp = require('chai-http');
 const pry = require('pryjs')
 
-const environment = process.env.NODE_ENV || 'test';
+const environment = 'test';
 const server = require('../index.js').app;
 const config = require('../knexfile.js')[environment];
 const database = require('knex')(config);
@@ -22,7 +22,7 @@ describe('API Routes', () => {
         throw error;
       });
   });
-  
+
   beforeEach(done => {
     database.raw("TRUNCATE playlist_favorites restart identity;")
       .then(() => database.raw("TRUNCATE playlists restart identity CASCADE;"))
@@ -36,7 +36,7 @@ describe('API Routes', () => {
             throw error;
     });
   });
-  
+
   describe('GET /api/v1/favorites', () => {
     it('should return all of the favorites', done => {
       chai.request(server)
@@ -54,7 +54,7 @@ describe('API Routes', () => {
         });
     });
   });
-  
+
   describe('POST /api/v1/favorites', () => {
     it('should add a new favorite', done => {
       chai.request(server)
@@ -80,14 +80,14 @@ describe('API Routes', () => {
             done();
           })
     });
-    
+
     it('should not create a new favorite with missing data', done => {
       chai.request(server)
         .post('/api/v1/favorites')
           .send({
             "favorites": {
               "name": "Missing stuff"
-            } 
+            }
           })
           .end((error, response) => {
             response.should.have.status(400);
@@ -97,7 +97,7 @@ describe('API Routes', () => {
             done();
           });
     });
-    
+
     it('should not create a new favorite with a rating over 100', done => {
       chai.request(server)
         .post('/api/v1/favorites')
@@ -118,7 +118,7 @@ describe('API Routes', () => {
             done();
           });
     });
-    
+
     it('should not create a new favorite with a rating under 0', done => {
       chai.request(server)
         .post('/api/v1/favorites')
@@ -139,7 +139,7 @@ describe('API Routes', () => {
             done();
           });
     });
-    
+
     it('should not create a new favorite with a rating that is not a number', done => {
       chai.request(server)
       .post('/api/v1/favorites')
@@ -161,7 +161,7 @@ describe('API Routes', () => {
         });
     });
   });
-  
+
   describe('GET /api/v1/favorites/:id', () => {
     it('should get the specified favorite information', done => {
       chai.request(server)
@@ -174,7 +174,7 @@ describe('API Routes', () => {
           done();
         });
     });
-    
+
     it('should return an error if the specified ID does not exist', done => {
       chai.request(server)
         .get('/api/v1/favorites/400')
@@ -184,4 +184,26 @@ describe('API Routes', () => {
         });
     });
   });
+
+  describe('DELETE /api/v1/favorites/:id', () => {
+    it('should delete a specified favorite from the database', done => {
+      chai.request(server)
+      .get('/api/v1/favorites/1')
+      .end((error, response) => {
+        chai.request(server)
+        .delete('/favorites/' + response.body[0].id)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('REMOVED');
+          response.body.REMOVED.should.be.a('object');
+          response.body.REMOVED.should.have.property('name');
+          response.body.REMOVED.should.have.property('_id');
+          response.body.REMOVED.name.should.equal('song_1');
+          done();
+        })
+      })
+    })
+  })
 });
