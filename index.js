@@ -71,19 +71,10 @@ app.get('/api/v1/favorites/:id', (request, response) => {
 })
 
 app.delete('/api/v1/favorites/:id', (request, response) => {
-  database('favorites').where('id', request.params.id).select()
-    .then(favorite => {
-      if(favorite.length) {
-        database('favorites')
-        .where('id', request.params.id)
-        .del()
-        .then(response => {response.resolve})
-      } else {
-        response.status(404).json({ error: `Could not find Favorite with ID: ${request.params.id}.` });
-      }
-    })
+  database('favorites').where('id', request.params.id).del()
+    .then( () => response.status(204).json() )
     .catch(error => {
-      response.status(500).json({ error })
+      response.status(404).json({ error: `Could not find Favorite with ID: ${request.params.id}.` })
     });
 })
 
