@@ -186,17 +186,16 @@ describe('API Routes', () => {
   });
 
 
-  // describe('DELETE /api/v1/favorites/:id', () => {
-  //   it('should delete a specified favorite from the database', done => {
-  //       chai.request(server)
-  //       .del('/api/v1/favorites/1')
-  //       .end((error, response) => {
-  //         // eval(pry.it)
-  //         response.should.have.status(204);
-  //         done();
-  //       })
-  //     })
-  //   })
+  describe('DELETE /api/v1/favorites/:id', () => {
+    it('should delete a specified favorite from the database', done => {
+        chai.request(server)
+        .del('/api/v1/favorites/1')
+        .end((error, response) => {
+          response.should.have.status(204);
+          done();
+        })
+      })
+    })
 
   
   describe('PUT /api/v1/favorites/:id', () => {
