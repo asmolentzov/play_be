@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors')
+const pry = require('pryjs')
 const environment = process.env.NODE_ENV || 'test';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
@@ -68,6 +69,15 @@ app.get('/api/v1/favorites/:id', (request, response) => {
     .catch(error => {
       response.status(500).json({ error })
     });
+});
+
+app.put('/api/v1/favorites/:id', (request, response) => {
+  const newFavorite = request.body.favorites;
+  database('favorites').where('id', request.params.id)
+    .update(newFavorite, ['id', 'name', 'artist_name', 'genre', 'rating'])
+      .then(newFavorite => {
+        response.status(200).json(newFavorite);
+      });
 })
 
 app.listen(app.get('port'), () => {
