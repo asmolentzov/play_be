@@ -24,11 +24,17 @@ describe('API Routes', () => {
   });
   
   beforeEach(done => {
-    database.seed.run()
-      .then(() => done())
-      .catch(error => {
-        throw error;
-      });
+    database.raw("TRUNCATE playlist_favorites restart identity;")
+      .then(() => database.raw("TRUNCATE playlists restart identity CASCADE;"))
+        .then(() => database.raw("TRUNCATE favorites restart identity CASCADE;"))
+          .then(() => database.seed.run()
+            .then(() => done())
+            .catch(error => {
+              throw error;
+            }))
+          .catch(error => {
+            throw error;
+    });
   });
   
   describe('GET /api/v1/favorites', () => {
@@ -55,7 +61,7 @@ describe('API Routes', () => {
         .post('/api/v1/favorites')
           .send({
             "favorites": {
-            "id": 1,
+            "id": 100,
             "name": "We Will Rock You",
             "artist_name": "Queen",
             "genre": "Rock",
