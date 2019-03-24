@@ -19,10 +19,9 @@ exports.up = function(knex, Promise) {
     knex.schema.createTable('playlist_favorites', function(table) {
       table.increments('id').primary();
       table.integer('favorite_id').unsigned();
-      table.foreign('favorite_id').references('favorites.id');
+      table.foreign('favorite_id').references('id').on('favorites').onDelete('CASCADE');
       table.integer('playlist_id').unsigned();
-      table.foreign('playlist_id').references('playlists.id');
-
+      table.foreign('playlist_id').references('id').on('playlists').onDelete('CASCADE');
       table.timestamps(true, true);
     })
   ])

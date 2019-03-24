@@ -92,6 +92,16 @@ app.put('/api/v1/favorites/:id', (request, response) => {
       });
 });
 
+app.delete('/api/v1/favorites/:id', (request, response) => {
+  database('favorites').where('id', request.params.id).del()
+    .then(() => {
+      response.status(204).json()
+    })
+    .catch(error => {
+      response.status(404).json({ error: `Could not find Favorite with ID: ${request.params.id}.` })
+    });
+})
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 })
