@@ -61,8 +61,13 @@ app.get('/api/v1/favorites/:id', (request, response) => {
     .then(favorite => {
       if(favorite.length) {
         response.status(200).json(favorite);
-      } 
+      } else {
+        response.status(404).json({ error: `Could not find Favorite with ID: ${request.params.id}.` });
+      }
     })
+    .catch(error => {
+      response.status(500).json({ error })
+    });
 })
 
 app.listen(app.get('port'), () => {
