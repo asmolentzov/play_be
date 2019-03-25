@@ -29,20 +29,6 @@ app.use((req, res, next) => {
 
 app.use('/api/v1/favorites', favorites);
 
-app.get('/api/v1/favorites/:id', (request, response) => {
-  database('favorites').where('id', request.params.id).select()
-    .then(favorite => {
-      if(favorite.length) {
-        response.status(200).json(favorite);
-      } else {
-        response.status(404).json({ error: `Could not find Favorite with ID: ${request.params.id}.` });
-      }
-    })
-    .catch(error => {
-      response.status(500).json({ error })
-    });
-});
-
 app.put('/api/v1/favorites/:id', (request, response) => {
   const newFavorite = request.body.favorites;
   for(let requiredParameter of ['id', 'name', 'artist_name', 'genre', 'rating']) {
