@@ -8,6 +8,7 @@ const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
 const favorites = require('./lib/routes/api/v1/favorites');
+const playlists = require('./lib/routes/api/v1/playlists');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/v1/favorites', favorites);
+app.use('/api/v1/playlists', playlists);
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
