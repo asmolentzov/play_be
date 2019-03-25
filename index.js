@@ -25,6 +25,40 @@ app.use((req, res, next) => {
   }
 });
 
+function Favorite(id,name,artist_name,genre,rating) {
+  this.id = id;
+  this.name = name;
+  this.artist_name = artist_name;
+  this.genre = genre;
+  this.rating = rating
+}
+
+function Playlist(id, playlist_name, favorites) {
+  this.id = id;
+  this.playlist_name = playlist_name;
+  this.favorites = favorites
+}
+
+const allPlaylist = () => database('playlists').select()
+
+const allFavorites = () => database.from('playlist_favorites')
+        .join('favorites', {'favorites.id': 'playlist_favorites.favorite_id'})
+        .select('favorites.id', 'favorites.name', 'favorites.artist_name', 'favorites.genre', 'favorites.rating', 'playlist_favorites.playlist_id')
+
+app.get('/api/v1/playlists', (request, response) => {
+  Promise.all([allPlaylist(), allFavorites()])
+  .then(data => {
+    let playlists = data[0].map(playData => {
+      let favs = data[1].filter(song => song.playlist_id === playData.id).map(rawFav => new Favorite(rawFav.id, rawFav.name, rawFav.artist_name, rawFav.genre, rawFav.rating))
+      return new Playlist(playData.id, playData.playlist_name, favs)})
+    response.status(200).json(playlists);
+  })
+  .catch(error => {
+    response.status(500).json({ error })
+  })
+})
+
+
 app.get('/api/v1/favorites', (request, response) => {
   database('favorites').select()
     .then(favorites => {
@@ -76,7 +110,7 @@ app.put('/api/v1/favorites/:id', (request, response) => {
   for(let requiredParameter of ['id', 'name', 'artist_name', 'genre', 'rating']) {
     if(!newFavorite[requiredParameter]) {
       return response.status(400).send({ error: `You're missing a ${requiredParameter} property.` })
-    } 
+    }
   };
   database('favorites').where('id', request.params.id)
     .update(newFavorite, ['id', 'name', 'artist_name', 'genre', 'rating'])
