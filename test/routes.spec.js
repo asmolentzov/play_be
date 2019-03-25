@@ -55,6 +55,28 @@ describe('API Routes', () => {
     });
   });
 
+  describe('GET /api/v1/playlists', () => {
+    it('should return all of the playlists', done => {
+      chai.request(server)
+        .get('/api/v1/playlists')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(3);
+          response.body[0].should.have.property('playlist_name');
+          response.body[0].should.have.property('favorites');
+          response.body[0].favorites.should.be.a('array');
+          response.body[0].favorites[0].should.have.property('id')
+          response.body[0].favorites[0].should.have.property('name')
+          response.body[0].favorites[0].should.have.property('artist_name')
+          response.body[0].favorites[0].should.have.property('genre')
+          response.body[0].favorites[0].should.have.property('rating')
+          done();
+        });
+    });
+  });
+
   describe('POST /api/v1/favorites', () => {
     it('should add a new favorite', done => {
       chai.request(server)
@@ -197,7 +219,7 @@ describe('API Routes', () => {
       })
     })
 
-  
+
   describe('PUT /api/v1/favorites/:id', () => {
     it('should update the specified favorite', done => {
       const newName = "We Are the Champions";
@@ -222,7 +244,7 @@ describe('API Routes', () => {
             done();
           });
     });
-    
+
     it('should return an error if the specified ID does not exist', done => {
       chai.request(server)
         .put('/api/v1/favorites/2000')
@@ -240,7 +262,7 @@ describe('API Routes', () => {
             done();
           });
     });
-    
+
     it('should return an error if all fields are not included', done => {
       chai.request(server)
         .put('/api/v1/favorites/1')
