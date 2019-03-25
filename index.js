@@ -29,27 +29,6 @@ app.use((req, res, next) => {
 
 app.use('/api/v1/favorites', favorites);
 
-app.put('/api/v1/favorites/:id', (request, response) => {
-  const newFavorite = request.body.favorites;
-  for(let requiredParameter of ['id', 'name', 'artist_name', 'genre', 'rating']) {
-    if(!newFavorite[requiredParameter]) {
-      return response.status(400).send({ error: `You're missing a ${requiredParameter} property.` })
-    } 
-  };
-  database('favorites').where('id', request.params.id)
-    .update(newFavorite, ['id', 'name', 'artist_name', 'genre', 'rating'])
-      .then(newFavorite => {
-        if(newFavorite.length) {
-          response.status(200).json(newFavorite);
-        } else {
-          response.status(400).json({ error: `Could not find Favorite with ID: ${request.params.id}.`});
-        }
-      })
-      .catch(error => {
-        response.status(500).json({ error });
-      });
-});
-
 app.delete('/api/v1/favorites/:id', (request, response) => {
   database('favorites').where('id', request.params.id).del()
     .then(() => {
