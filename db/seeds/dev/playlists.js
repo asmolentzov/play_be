@@ -18,8 +18,10 @@ exports.seed = function(knex, Promise) {
           .then((playlists) => {
             return knex('playlist_favorites').insert([
               {playlist_id: playlists[0], favorite_id: favorites[0]},
+              {playlist_id: playlists[0], favorite_id: favorites[1]},
               {playlist_id: playlists[1], favorite_id: favorites[1]},
-              {playlist_id: playlists[2], favorite_id: favorites[2]}
+              {playlist_id: playlists[2], favorite_id: favorites[2]},
+              {playlist_id: playlists[2], favorite_id: favorites[0]}
             ])
           })
           .catch((error) => console.log(`Error seeding playlists: ${error}`))
