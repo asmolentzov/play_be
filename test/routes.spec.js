@@ -310,7 +310,7 @@ describe('API Routes', () => {
  describe('GET /api/v1/playlists/:playlist_id/favorites', () => {
    it('should get the specified playlist and its associated favorites', done => {
      chai.request(server)
-      .post('/api/v1/playlists/1/favorites')
+      .get('/api/v1/playlists/1/favorites')
       .end((error, response) => {
         response.should.have.status(200);
         response.body.should.be.a('object');
