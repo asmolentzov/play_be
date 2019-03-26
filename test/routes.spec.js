@@ -337,4 +337,17 @@ describe('API Routes', () => {
       });
    });
  });
+ 
+ describe('DELETE /api/v1/playlists/:playlist_id/favorites/:id', () => {
+   it('should delete the playlist_favorite record specified', done => {
+     chai.request(server)
+      .delete('/api/v1/playlists/1/favorites/2')
+      .end((error, response) => {
+        response.should.have.status(204);
+        response.body.should.have.property('message');
+        response.body.message.should.equal("Successfully removed song_2 from playlist_1")
+        done();
+      })
+   })
+ })
 });
