@@ -326,7 +326,8 @@ describe('API Routes', () => {
         response.body.favorites[0].should.have.property('rating');
         done();
       })
-   });
+   })
+   
    it('should return 404 if the specified playlist is not found', done => {
      chai.request(server)
       .get('/api/v1/playlists/1000/favorites')
