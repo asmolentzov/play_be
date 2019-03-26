@@ -283,8 +283,25 @@ describe('API Routes', () => {
       chai.request(server)
       .post('/api/v1/playlists/1/favorites/2')
         .end((error, response) => {
-          // eval(pry.it)
           response.should.have.status(201);
+          done();
+      });
+    })
+
+    it('should error out if uri request params are missing or do not exist, favorite_id', done => {
+      chai.request(server)
+      .post('/api/v1/playlists/1/favorites/taco')
+        .end((error, response) => {
+          response.should.have.status(500);
+          done();
+      });
+    })
+
+    it('should error out if uri request params are missing or do not exist, playlist_id', done => {
+      chai.request(server)
+      .post('/api/v1/playlists/taco/favorites/1')
+        .end((error, response) => {
+          response.should.have.status(500);
           done();
       });
     })
