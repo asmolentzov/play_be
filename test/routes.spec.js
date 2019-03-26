@@ -278,4 +278,15 @@ describe('API Routes', () => {
     })
   });
 
+  describe('POST /api/v1/playlists/:playlist_id/favorites/:id', () => {
+    it('should update playlist_favorites', done => {
+      chai.request(server)
+      .post('/api/v1/playlists/1/favorites/2')
+        .end((error, response) => {
+          // eval(pry.it)
+          response.should.have.status(201);
+          done();
+      });
+    })
+ })
 });
