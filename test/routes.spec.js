@@ -306,4 +306,26 @@ describe('API Routes', () => {
       });
     })
  })
+ 
+ describe('GET /api/v1/playlists/:playlist_id/favorites', () => {
+   it('should get the specified playlist and its associated favorites', done => {
+     chai.request(server)
+      .post('/api/v1/playlists/1/favorites')
+      .end((error, response) => {
+        response.should.have.status(200);
+        response.body.should.be.a('object');
+        response.body.should.have.property('id');
+        response.body.should.have.property('playlist_name');
+        response.body.should.have.property('favorites');
+        response.body.favorites.should.be.a('array');
+        response.body.favorites[0].should.be.a('object');
+        response.body.favorites[0].should.have.property('id');
+        response.body.favorites[0].should.have.property('name');
+        response.body.favorites[0].should.have.property('artist_name');
+        response.body.favorites[0].should.have.property('genre');
+        response.body.favorites[0].should.have.property('rating');
+        done();
+      })
+   })
+ })
 });
