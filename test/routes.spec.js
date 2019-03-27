@@ -278,6 +278,21 @@ describe('API Routes', () => {
     })
   });
 
+  describe('POST /api/v1/playlists', () => {
+    it('should make a new playlist if data is provided', done => {
+      chai.request(server)
+      .post('/api/v1/playlists')
+        .send({
+          "playlists": {
+            "playlist_name": "new_list"
+          }
+        })
+        .end((error, response) => {
+          response.should.have.status(201);
+          done();
+        })
+    })
+
   describe('POST /api/v1/playlists/:playlist_id/favorites/:id', () => {
     it('should update playlist_favorites', done => {
       chai.request(server)
