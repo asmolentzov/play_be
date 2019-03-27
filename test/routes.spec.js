@@ -278,6 +278,55 @@ describe('API Routes', () => {
     })
   });
 
+  describe('PUT /api/v1/playlists/:id', () => {
+    it('should update the specified playlist', done => {
+      const newName = "ROCK 1";
+      chai.request(server)
+        .put('/api/v1/playlists/1')
+          .send({
+              "playlists": {
+                "playlist_name": newName
+              }
+          })
+          .end((error, response) => {
+            response.should.have.status(200);
+            response.body.should.be.a('array');
+            response.body[0].should.be.a('object');
+            response.body[0].playlist_name.should.equal(newName);
+            done();
+          });
+    });
+
+    it('should return an error if the specified ID does not exist', done => {
+      const newName = "ROCK 1";
+      chai.request(server)
+        .put('/api/v1/playlists/2000')
+          .send({
+              "playlists": {
+                "playlist_name": newName
+              }
+          })
+          .end((error, response) => {
+            response.should.have.status(400);
+            done();
+          });
+    });
+
+    it('should return an error if all fields are not included', done => {
+      chai.request(server)
+        .put('/api/v1/playlists/1')
+          .send({
+            "playlists": {
+              "name": ""
+            }
+          })
+          .end((error, response) => {
+            response.should.have.status(400);
+            done();
+          });
+    })
+  });
+
   describe('POST /api/v1/playlists', () => {
     it('should make a new playlist if data is provided', done => {
       chai.request(server)
