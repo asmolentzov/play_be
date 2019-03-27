@@ -343,7 +343,8 @@ describe('API Routes', () => {
      chai.request(server)
       .delete('/api/v1/playlists/1/favorites/2')
       .end((error, response) => {
-        response.should.have.status(204);
+        response.should.have.status(200);
+        response.body.should.be.a('object')
         response.body.should.have.property('message');
         response.body.message.should.equal("Successfully removed song_2 from playlist_1")
         done();
