@@ -308,6 +308,17 @@ describe('API Routes', () => {
     })
   })
 
+  describe('DELETE /api/v1/playlists/:id', () => {
+    it('should delete a specified playlists from the database', done => {
+        chai.request(server)
+        .del('/api/v1/playlists/1')
+        .end((error, response) => {
+          response.should.have.status(204);
+          done();
+        })
+      })
+    })
+
   describe('POST /api/v1/playlists/:playlist_id/favorites/:id', () => {
     it('should update playlist_favorites', done => {
       chai.request(server)
