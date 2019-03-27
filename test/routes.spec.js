@@ -293,6 +293,21 @@ describe('API Routes', () => {
         })
     })
 
+    it('should error if a playlist has no title', done => {
+      chai.request(server)
+      .post('/api/v1/playlists')
+        .send({
+          "playlists": {
+            "playlist_name": ""
+          }
+        })
+        .end((error, response) => {
+          response.should.have.status(400);
+          done();
+        })
+    })
+  })
+
   describe('POST /api/v1/playlists/:playlist_id/favorites/:id', () => {
     it('should update playlist_favorites', done => {
       chai.request(server)
@@ -321,7 +336,7 @@ describe('API Routes', () => {
       });
     })
  })
- 
+
  describe('GET /api/v1/playlists/:playlist_id/favorites', () => {
    it('should get the specified playlist and its associated favorites', done => {
      chai.request(server)
@@ -342,7 +357,7 @@ describe('API Routes', () => {
         done();
       })
    })
-   
+
    it('should return 404 if the specified playlist is not found', done => {
      chai.request(server)
       .get('/api/v1/playlists/1000/favorites')
@@ -352,7 +367,7 @@ describe('API Routes', () => {
       });
    });
  });
- 
+
  describe('DELETE /api/v1/playlists/:playlist_id/favorites/:id', () => {
    it('should delete the playlist_favorite record specified', done => {
      chai.request(server)
@@ -365,7 +380,7 @@ describe('API Routes', () => {
         done();
       })
    });
-   
+
    it('should return a 404 if the playlist id cannot be found', done => {
      chai.request(server)
       .delete('/api/v1/playlists/100/favorites/2')
@@ -374,7 +389,7 @@ describe('API Routes', () => {
         done();
       })
    });
-   
+
    it('should return a 404 if the favorite id cannot be found', done => {
      chai.request(server)
       .delete('/api/v1/playlists/1/favorites/200')
