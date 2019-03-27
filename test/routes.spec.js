@@ -349,6 +349,24 @@ describe('API Routes', () => {
         response.body.message.should.equal("Successfully removed song_2 from playlist_1")
         done();
       })
+   });
+   
+   it('should return a 404 if the playlist id cannot be found', done => {
+     chai.request(server)
+      .delete('/api/v1/playlists/100/favorites/2')
+      .end((error, response) => {
+        response.should.have.status(404);
+        done();
+      })
+   });
+   
+   it('should return a 404 if the favorite id cannot be found', done => {
+     chai.request(server)
+      .delete('/api/v1/playlists/1/favorites/200')
+      .end((error, response) => {
+        response.should.have.status(404);
+        done();
+      })
    })
  })
 });
