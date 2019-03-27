@@ -7,7 +7,7 @@ jobs:
   build:
     working_directory: ~/play_be
     docker:
-      - image: circleci/node:7.10
+      image: circleci/node:10.12.0-stretch
         environment:
           PGHOST: 127.0.0.1
           PGUSER: play_app_test
