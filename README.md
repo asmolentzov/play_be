@@ -44,15 +44,27 @@ Additionally, a CORS package has been added to allow you to consume this API wit
 The frontend for this app and it's documentation can be found at github.com/asmolentzov/play_fe
 
 ### GET /api/v1/favorites
+![GET favorites response](readme_images/api:v1:favorites.png)
 ### GET /api/v1/favorites/:id
+![GET single favorite response](readme_images/api:v1:favorites:id.png)
 ### POST /api/v1/favorites
+![POST favorites response](readme_images/POST api:v1:favorites.png)
 ### PUT /api/v1/favorites/:id
+![PUT favorites response](readme_images/PUT api:v1:favorites:id.png)
 ### DELETE /api/v1/favorites/:id
+![DELETE favorites response](readme_images/DELETE api:v1:favorites:id.png)
 ### GET /api/v1/playlists
-### GET /api/v1/playlists/:id/favorites/:id
+![GET playlists response](readme_images/GET api:v1:playlists.png)
+### GET /api/v1/playlists/:playlist_id/favorites
+![GET single playlists favorites response](readme_images/GET api:v1:playlists:id.png)
 ### POST /api/v1/playlists
+![POST playlists response](readme_images/POST api:v1:playlists.png)
+### POST /api/v1/playlists/playlist_id/favorites/id
+![POST playlists response](readme_images/POST api:v1:playlists:playlist_id:favorites:id.png)
 ### PUT /api/v1/playlists/:id
+![PUT playlists response](readme_images/PUT api:v1:playlists:id.png)
 ### DELETE /api/v1/playlists/:id
+![DELETE playlists response](readme_images/DELETE api:v1:playlists:id.png)
 
 
 ## How to Contribute
