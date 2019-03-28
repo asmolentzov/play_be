@@ -59,55 +59,55 @@ The frontend for this app and it's documentation can be found at github.com/asmo
 
 #### Add new favorite
 
-![POST favorites response](readme_images/POST api:v1:favorites.png)
+![POST favorites response](readme_images/POST:api:v1:favorites.png)
 
 ### PUT /api/v1/favorites/:id
 
 #### Edit existing favorite
 
-![PUT favorites response](readme_images/PUT api:v1:favorites:id.png)
+![PUT favorites response](readme_images/PUT:api:v1:favorites:id.png)
 
 ### DELETE /api/v1/favorites/:id
 
 #### Delete existing favorite
 
-![DELETE favorites response](readme_images/DELETE api:v1:favorites:id.png)
+![DELETE favorites response](readme_images/DELETE:api:v1:favorites:id.png)
 
 ### GET /api/v1/playlists
 
 #### Return all playlists
 
-![GET playlists response](readme_images/GET api:v1:playlists.png)
+![GET playlists response](readme_images/GET:api:v1:playlists.png)
 
 ### GET /api/v1/playlists/:playlist_id/favorites
 
 #### Return a single playlist and its favorites
 
-![GET single playlists favorites response](readme_images/GET api:v1:playlists:id.png)
+![GET single playlists favorites response](readme_images/GET:api:v1:playlists:id.png)
 
 ### POST /api/v1/playlists
 
 #### Add new playlist
 
-![POST playlists response](readme_images/POST api:v1:playlists.png)
+![POST playlists response](readme_images/POST:api:v1:playlists.png)
 
 ### POST /api/v1/playlists/playlist_id/favorites/id
 
 #### Add a favorite song into a playlist
 
-![POST playlists response](readme_images/POST api:v1:playlists:playlist_id:favorites:id.png)
+![POST playlists response](readme_images/POST:api:v1:playlists:playlist_id:favorites:id.png)
 
 ### PUT /api/v1/playlists/:id
 
 #### Edit existing playlist
 
-![PUT playlists response](readme_images/PUT api:v1:playlists:id.png)
+![PUT playlists response](readme_images/PUT:api:v1:playlists:id.png)
 
 ### DELETE /api/v1/playlists/:id
 
 #### Delete existing playlist
 
-![DELETE playlists response](readme_images/DELETE api:v1:playlists:id.png)
+![DELETE playlists response](readme_images/DELETE:api:v1:playlists:id.png)
 
 
 ## How to Contribute
