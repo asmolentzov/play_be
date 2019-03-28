@@ -83,7 +83,7 @@ The frontend for this app and it's documentation can be found at github.com/asmo
 
 #### Return a single playlist and its favorites
 
-![GET single playlists favorites response](readme_images/GET:api:v1:playlists:playlist_id:favorites:id.png)
+![GET single playlists favorites response](readme_images/GET:api:v1:playlists:playlist_id:favorites.png)
 
 ### POST /api/v1/playlists
 
